@@ -1,0 +1,11 @@
+&SYSPARAMS
+	Nk1 = 48 !48
+	Nk2 = 48 !48
+	Nk3 = 8 !48
+	spinfac = 2
+	Beta = 1.0d5
+	npart = 7.0d0
+	Eta = 4.0d-3
+	file_ham = "./../data/BlackP/Hqpgw.h5"
+	file_vint = "./../data/BlackP/Vbare_crpa.h5"
+/
