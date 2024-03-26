@@ -1,0 +1,26 @@
+&SYSPARAMS
+        nk1 = 16
+        nk2 = 16
+        nk3 = 12
+        scissor_index = 21
+        scissor_energy = 0.009922D0
+        file_ham = "./data/BlackP/Hqpgw.h5"
+        file_vint = "./data/BlackP/Vbare_crpa_Felipe.h5"
+        file_wint = "./data/BlackP/W_int_tout.h5"
+/
+&EXCITONPARAMS
+        pexc = 0.0d0, 0.0d0, 0.0d0
+        ival = 20
+        icond = 21
+/
+&SPECTRUM
+/
+&SOLVERPARAMS
+        nstates = 2
+        eig_tol = 1.0d-6
+        eig_maxiter = 1000
+/
+&OUTPUT
+        exc_eig = .true.
+        exc_dens = .true.
+/
