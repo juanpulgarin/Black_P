@@ -1,0 +1,16 @@
++--------------------------------------------------------------------+
+|                    Wannier90 post-processing                       |
++--------------------------------------------------------------------+
+  Calculation started on 2024/03/15 at 15:28:49
+ 
+ Info: 512 k-points were read from file.
+ 
+ 
+Time [Initialize Wannier] =        2 sc
+Time [orbital weight] =        4 msc
+Time [Berry curvature] =        8 sc
+Time [quantum metric] =        8 sc
+Time [velocity matrix elements] =        9 sc
+ 
+Time [total] =       27 sc
++--------------------------------------------------------------------+
