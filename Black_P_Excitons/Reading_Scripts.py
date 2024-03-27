@@ -53,6 +53,20 @@ def ReadKpts(fname):
     f.close()
     return kpts
 
+def Read_Eigen_states(fname):
+    f = h5py.File(fname, "r")
+    ϵ = np.array(f['eigenvalues'])
+    ϕ_imag = np.array(f['evecs-imag'])
+    ϕ_real = np.array(f['evecs-real'])
+    f.close()
+    return ϵ,ϕ_real,ϕ_imag
+
+def Read_Density(fname):
+    f = h5py.File(fname, "r")
+    ψ2 = np.array(f['dens'])
+    f.close()
+    return ψ2
+
 def Joining(irvec,Vint_r,Uint_r,orbitales,lat):
     xs = irvec[:,0]
     ys = irvec[:,1]

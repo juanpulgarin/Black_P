@@ -11,5 +11,5 @@ filename="$1"
 word_to_search="$2"
 
 # Use grep to search for the word in the file and print the following word
-grep -w  "$word_to_search" "$filename"  | awk '{print $3}'
+grep -w  "$word_to_search" "$filename"  | awk '{print $2}'
 

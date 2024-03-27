@@ -1,14 +1,14 @@
 +--------------------------------------------------------------------+
 |                         Wannier excitons                           |
 +--------------------------------------------------------------------+
-  Calculation started on 2024/03/12 at 15:32:35
+  Calculation started on 2024/03/27 at 17:45:34
 
           48          48          48          48          48          48
- Input: [Hamiltionian from file: ./data/BlackP/Hqpgw_new.h5]
- Input: [Interaction from file: ./data/BlackP/Vbare_crpa_Felipe.h5]
- Input: [Interaction from file: ./data/BlackP/W_int_tout.h5]
+ Input: [Hamiltionian from file: ./../../DATA/data_excitons/BlackP/Hqpgw_new.h5]
+ Input: [Interaction from file: ./../../DATA/data_excitons/BlackP/Vbare_crpa_Felipe.h5]
+ Input: [Interaction from file: ./../../DATA/data_excitons/BlackP/W_int_tout.h5]
 
-Time [Reading input] =      246 msc
+Time [Reading input] =      200 msc
 ************************ Exciton eigenstates *************************
       110592           3          48          48          48
  all eigenstates converged!
