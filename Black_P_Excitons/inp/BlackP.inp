@@ -1,7 +1,7 @@
 &SYSPARAMS
-        nk1 = 64
-        nk2 = 64
-        nk3 = 64
+        nk1 = 52
+        nk2 = 52
+        nk3 = 52
         scissor_index = 22
         !scissor_energy = 0.009922D0
         scissor_energy = 0.0d0
