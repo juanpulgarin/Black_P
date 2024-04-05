@@ -13,8 +13,8 @@ def Plot_bandstructure(epsk,klabel,Emin=-100.0,Emax=100.0,fout=""):
         #ax.plot(xk, Ry * epsk[:,ibnd], c='blue')
         ax.plot(xk, cst.Ry * epsk[:,ibnd], c='red')
     Erange = np.amax(epsk) - np.amin(epsk)
-    Emin_ = Ry*(np.amin(epsk) - 0.02 * Erange)
-    Emax_ = Ry*(np.amax(epsk) + 0.02 * Erange)
+    Emin_ = cst.Ry*(np.amin(epsk) - 0.02 * Erange)
+    Emax_ = cst.Ry*(np.amax(epsk) + 0.02 * Erange)
 
     if Emin > -90.0:
         Emin_ = Emin

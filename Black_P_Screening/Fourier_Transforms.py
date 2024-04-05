@@ -29,7 +29,7 @@ def Transform_r(nk1,nk2,nk3,Vint_q):
             x = np.reshape(Vint_q[i,j,:], [nk1,nk2,nk3])
             x_shift = sfft.fftshift(x)
             y = sfft.fftn(x_shift)
-            Vint_r[i,j,:] = np.reshape(np.real(y), [nR])
+            Vint_r[i,j,:] = np.reshape(y, [nR])
 
     return Vint_r
 
