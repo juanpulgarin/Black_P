@@ -14,7 +14,6 @@ def GetRecLatt(a1,a2,a3):
 	b1 = 2*np.pi/V * np.cross(a2, a3)
 	b2 = 2*np.pi/V * np.cross(a3, a1)
 	b3 = 2*np.pi/V * np.cross(a1, a2)
-	print(b1,b2,b3)
 	return b1,b2,b3
 #----------------------------------------------------------------------
 def FracToCart(kpt,b1,b2,b3):

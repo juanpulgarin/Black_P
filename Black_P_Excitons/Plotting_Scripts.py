@@ -104,3 +104,65 @@ def PlotVintr(irvec,Vint_r,Uint_r,orbitales,lat,npoints,i_orb,j_orb,color_l="bla
     ax.tick_params(axis='y', labelsize=13)
     #ax.set_ylim(0,1)
     ax.legend()
+
+###plotting 3d
+"""
+
+import plotly.express as px
+import plotly.graph_objects as go
+import plotly.figure_factory as ff
+
+
+x, y = np.linspace(0, nkx-1, nkx), np.linspace(0, nky-1, nky)
+X,Y = np.meshgrid(x,y)
+#fig = go.Figure(data=[go.Surface(z=ψ[0,:].reshape(nkx,nky,nkz)[:,:,16], x=x, y=y,
+fig = go.Figure(data=[go.Surface(z=ψ[0,:].reshape(nkx,nky,nkz)[:,:,int(nkz/2)], x=x, y=y,
+                        colorscale='Reds',cmin=0,cmax=0.6, colorbar = dict(tickfont=dict(
+                            color='black',size=30,family='Old Standard TT, serif',),orientation='h')   )])
+#fig = ff.create_trisurf(z=ψ[0,:].reshape(32,32,32)[:,:,16], x=X, y=Y)
+
+fig.update_layout(scene = dict(
+                    xaxis = dict( title = ' ',
+                        ticktext= [r'-1/4',r'0',r'1/4'],
+                        tickvals= [int(nkx/2)-int(nkx/4),int(nkx/2)-1,int(nkx/2)+int(nkx/4)-1],
+                        range=[int(nkx/2)-int(nkx/4)-1,int(nkx/2)+int(nkx/4)],tickfont=dict(
+                            color='black',
+                            size=17,
+                            family='Old Standard TT, serif',)),
+                    yaxis = dict( title = ' ',
+                        ticktext= [r'-1/4',r'0',r'1/4'],
+                        tickvals= [int(nky/2)-int(nky/4),int(nky/2)-1,int(nky/2)+int(nky/4)-1],
+                        range=[int(nky/2)-int(nky/4)-1,int(nky/2)+int(nky/4)],tickfont=dict(
+                            color='black',
+                            size=17,
+                            family='Old Standard TT, serif',)) ,
+                    zaxis = dict( title = ' ',
+                            tickfont=dict(
+                            color='black',
+                            size=17,
+                            family='Old Standard TT, serif',) )),
+                    width=700,
+                    margin=dict(r=10, l=10, b=10, t=10)
+                  )
+
+
+#fig.update_xaxes(range=[8, 23])
+#fig.update_layout(xaxis = dict(range=[7,24]))
+#fig.update_yaxes(range=[8, 23])
+
+
+fig.show()
+
+fig, ax = plt.subplots(1, 1)
+palette = copy(plt.get_cmap('Reds'))
+palette.set_under('white', 1.0)  # 1.0 represents not transparent
+#levels = np.arange(0.0,0.6, 0.01)
+#levels[0] = 1e-3
+#norm = colors.BoundaryNorm(levels, ncolors=palette.N)
+
+
+#contour = ax.imshow(ψ[0,:].reshape(32,32,32)[:,:,16],aspect='auto', cmap=palette,norm=norm)
+contour = ax.contourf(ψ[0,:].reshape(nkx,nky,nkz)[:,:,int(nkz/2)], cmap=palette)
+#cbar = fig.colorbar(contour, extend='min', shrink=0.9, ax=ax)
+
+"""
