@@ -38,9 +38,9 @@ def FourierInterpolate(nk1,nk2,nk3,Ψ_k_p,kpts):
     for ik in range(nk):
         kpt = kpts[ik,:]
 
-        ex1 = np.exp(2j*np.pi*xr*(kpt[0]+0.5))
-        ex2 = np.exp(2j*np.pi*yr*(kpt[1]+0.5))
-        ex3 = np.exp(2j*np.pi*zr*(kpt[2]+0.5))
+        ex1 = np.exp(2.0j*np.pi*xr*(kpt[0]+0.5))
+        ex2 = np.exp(2.0j*np.pi*yr*(kpt[1]+0.5))
+        ex3 = np.exp(2.0j*np.pi*zr*(kpt[2]+0.5))
 
 
         vect_int[ik] = np.einsum('i,j,k,ijk', ex1, ex2,ex3, Ψ_r) / (nk1 * nk2 * nk3)
