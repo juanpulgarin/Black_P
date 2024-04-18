@@ -18,7 +18,7 @@ def SHIFTING_KplusP(nk1,nk2,nk3,Ψ_k,pexc):
 
     Ψ_r_p = np.einsum('i,j,k,ijk->ijk', ex1, ex2,ex3, Ψ_r)
 
-    Ψ_k_p = np.fft.ifftn(Ψ_r_p)
+    Ψ_k_p = np.real(np.fft.ifftn(Ψ_r_p))
 
     return Ψ_k_p
 
@@ -33,7 +33,8 @@ def FourierInterpolate(nk1,nk2,nk3,Ψ_k_p,kpts):
 
     nk = kpts.shape[0]
 
-    vect_int = np.zeros(nk,dtype=np.complex_)
+    #vect_int = np.zeros(nk,dtype=np.complex_)
+    vect_int = np.zeros(nk)
 
     for ik in range(nk):
         kpt = kpts[ik,:]
@@ -43,7 +44,7 @@ def FourierInterpolate(nk1,nk2,nk3,Ψ_k_p,kpts):
         ex3 = np.exp(2.0j*np.pi*zr*(kpt[2]+0.5))
 
 
-        vect_int[ik] = np.einsum('i,j,k,ijk', ex1, ex2,ex3, Ψ_r) / (nk1 * nk2 * nk3)
+        vect_int[ik] = np.real( np.einsum('i,j,k,ijk', ex1, ex2,ex3, Ψ_r) / (nk1 * nk2 * nk3) )
 
     return vect_int
 
