@@ -1,7 +1,7 @@
 &SYSPARAMS
-        nk1 = 62
-        nk2 = 62
-        nk3 = 62
+        nk1 = 64
+        nk2 = 64
+        nk3 = 64
         scissor_index = 22
         !scissor_energy = 0.009922D0
         scissor_energy = 0.0d0
@@ -19,7 +19,7 @@
 &SPECTRUM
 /
 &SOLVERPARAMS
-        nstates = 5
+        nstates = 4
         eig_tol = 1.0d-10
         eig_maxiter = 1000
 /
