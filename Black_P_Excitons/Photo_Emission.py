@@ -1,4 +1,26 @@
 import numpy as np
+from scipy.interpolate import RegularGridInterpolator
+
+def Interpolator(nk1,nk2,nk3,Ψ_k,nuevok):
+    x1 = np.linspace(-0.5,0.5, nkx+1)[0:-1]
+    x2 = np.linspace(-0.5,0.5, nky+1)[0:-1]
+    x3 = np.linspace(-0.5,0.5, nkz+1)[0:-1]
+
+    interp = RegularGridInterpolator((x1,x2,x3), np.reshape(ψ_k, [nk1,nk2,nk3]),method='linear',bounds_error=False, fill_value=None)
+
+    x1n = np.linspace(-0.5,0.5, nuevok+1)[0:-1]
+    x2n = np.linspace(-0.5,0.5, nuevok+1)[0:-1]
+    x3n = np.linspace(-0.5,0.5, nuevok+1)[0:-1]
+
+    #y =interp((X,Y,Z))
+    #X, Y, Z = np.meshgrid(x1n, x2n,x3n, indexing='ij', sparse=True)
+    #yp = y/np.sum(y)
+
+    y =interp((X,Y,Z))
+    X, Y, Z = np.meshgrid(x1n, x2n,x3n, indexing='ij')
+    yp = (y/np.sum(y)).reshape(nuevok**3)
+
+    return yp
 
 def Delta (E,sigma):
     return 1/np.sqrt(2*np.pi*sigma**2)*np.exp(-0.5*E**2/sigma**2)
