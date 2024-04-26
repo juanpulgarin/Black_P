@@ -1,0 +1,25 @@
++--------------------------------------------------------------------+
+|                         Wannier excitons                           |
++--------------------------------------------------------------------+
+  Calculation started on 2024/04/23 at 14:34:16
+
+          48          48          48          48          48          48
+ Input: [Hamiltionian from file: ./../../DATA/data_excitons/BlackP/Hqpgw_new.h5]
+ Input: [Interaction from file: ./../../DATA/data_excitons/BlackP/Vbare_crpa_Felipe.h5]
+ Input: [Interaction from file: ./../../DATA/data_excitons/BlackP/W_int_tout.h5]
+
+Time [Reading input] =      134 msc
+************************ Exciton eigenstates *************************
+      110592           3          48          48          48
+ all eigenstates converged!
+E(1) =      0.5835028
+E(2) =      0.5961179
+E(3) =      0.5963530
+E(4) =      0.5980819
+E(5) =      0.6007092
+**********************************************************************
+
+Time [Wannier equation] =       31 min
+
+Time [total] =       31 min
++--------------------------------------------------------------------+
