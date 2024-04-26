@@ -1,7 +1,7 @@
 &SYSPARAMS
-        nk1 = 48
-        nk2 = 48
-        nk3 = 48
+        nk1 = 60
+        nk2 = 60
+        nk3 = 60
         scissor_index = 22
         !scissor_energy = 0.009922D0
         scissor_energy = 0.0d0
@@ -12,7 +12,7 @@
         file_wint  = "./../../DATA/data_excitons/BlackP/W_int_tout.h5"
 /
 &EXCITONPARAMS
-        pexc = 0.0d0, 0.05d0, 0.0d0
+        pexc = 0.0d0, 0.03d0, 0.0d0
         ival = 20
         icond = 21
 /
