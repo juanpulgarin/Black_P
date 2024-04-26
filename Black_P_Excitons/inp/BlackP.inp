@@ -12,7 +12,7 @@
         file_wint  = "./../../DATA/data_excitons/BlackP/W_int_tout.h5"
 /
 &EXCITONPARAMS
-        pexc = 0.0d0, 0.03d0, 0.0d0
+        pexc = 0.0d0, 0.068d0, 0.0d0
         ival = 20
         icond = 21
 /
