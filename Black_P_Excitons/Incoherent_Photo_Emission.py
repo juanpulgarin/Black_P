@@ -19,7 +19,15 @@ def Reading_Data(Q,direccion,retorno=5):
     Dp =  np.array([Q])
     Dm = -Dp
 
-    if direccion =='kx':
+    if retorno==8:
+        fname="./out_Hqpgw_new/"+'px'+zero+'_py'+zero+'_pz'+zero+"_exc.h5"
+        ϵ_plus,ϕ_real_plus,ϕ_imag_plus =Reading.Read_Eigen_states(fname)
+        ϕ_plus = ϕ_real_plus + 1.0j*ϕ_imag_plus
+
+        fname="./out_Hqpgw_new/"+'px'+zero+'_py'+zero+'_pz'+zero+"_exc_dens.h5"
+        ψ_plus = Reading.Read_Density(fname)
+
+    if direccion =='kx' and retorno !=8:
         fname="./out_Hqpgw_plus_new_merlin/"+'px'+str(Dp[0])+'_py'+zero+'_pz'+zero+"_exc.h5"
         ϵ_plus,ϕ_real_plus,ϕ_imag_plus =Reading.Read_Eigen_states(fname)
         ϕ_plus = ϕ_real_plus + 1.0j*ϕ_imag_plus
@@ -34,7 +42,7 @@ def Reading_Data(Q,direccion,retorno=5):
         fname="./out_Hqpgw_minus_new_merlin/"+'px'+str(Dm[0])+'_py'+zero+'_pz'+zero+"_exc_dens.h5"
         ψ_minus = Reading.Read_Density(fname)
 
-    if direccion =='ky':
+    if direccion =='ky' and retorno !=8:
         fname="./out_Hqpgw_plus_new_merlin/"+'px'+zero+'_py'+str(Dp[0])+'_pz'+zero+"_exc.h5"
         ϵ_plus,ϕ_real_plus,ϕ_imag_plus =Reading.Read_Eigen_states(fname)
         ϕ_plus = ϕ_real_plus + 1.0j*ϕ_imag_plus
@@ -49,7 +57,7 @@ def Reading_Data(Q,direccion,retorno=5):
         fname="./out_Hqpgw_minus_new_merlin/"+'px'+zero+'_py'+str(Dm[0])+'_pz'+zero+"_exc_dens.h5"
         ψ_minus = Reading.Read_Density(fname)
 
-    if direccion =='kz':
+    if direccion =='kz' and retorno !=8:
         fname="./out_Hqpgw_plus_new_merlin/"+'px'+zero+'_py'+zero+'_pz'+str(Dp[0])+"_exc.h5"
         ϵ_plus,ϕ_real_plus,ϕ_imag_plus =Reading.Read_Eigen_states(fname)
         ϕ_plus = ϕ_real_plus + 1.0j*ϕ_imag_plus
@@ -84,6 +92,9 @@ def Reading_Data(Q,direccion,retorno=5):
 
     if retorno ==7:
         return ϵ_plus,ϕ_plus,ψ_plus,ϕ_minus,ψ_minus
+
+    if retorno ==8:
+        return ϵ_plus,ψ_plus
 
 def Plotting_Exitonic_Density(x1,nkx,nky,nkz,ψ,Qd,direccion):
     #====================================================================================
@@ -210,6 +221,14 @@ def Plotting_Exitonic_Density(x1,nkx,nky,nkz,ψ,Qd,direccion):
     plt.show()
 
 def Fitting_Parameters(x1,nkx,nky,nkz,ψ,direccion,QQ):
+    if direccion == False:
+        poptx, pcovx = curve_fit( func_q_eq_0, x1,np.reshape(ψ[0,:], [nkx,nky,nkz])[:,int(nky/2),int(nkz/2)], bounds=((-np.inf,-np.inf,-np.inf), (np.inf,np.inf,np.inf)) )
+        popty, pcovy = curve_fit( func_q_eq_0, x1,np.reshape(ψ[0,:], [nkx,nky,nkz])[int(nkx/2),:,int(nkz/2)], bounds=((-np.inf,-np.inf,-np.inf), (np.inf,np.inf,np.inf)) )
+        poptz, pcovz = curve_fit( func_q_eq_0, x1,np.reshape(ψ[0,:], [nkx,nky,nkz])[int(nkx/2),int(nky/2),:], bounds=((-np.inf,-np.inf,-np.inf), (np.inf,np.inf,np.inf)) )
+        poptx[2] = 0.0
+        popty[2] = 0.0
+        poptz[2] = 0.0
+
     if direccion =='kx':
         poptx, pcovx = curve_fit( func_q_eq_0, x1,np.reshape(ψ[0,:], [nkx,nky,nkz])[:,int(nky/2),int(nkz/2)], bounds=((-np.inf,-np.inf,-np.inf), (np.inf,np.inf,np.inf)) )
         popty, pcovy = curve_fit( func_q_eq_0, x1,np.reshape(ψ[0,:], [nkx,nky,nkz])[int(nkx/2),:,int(nkz/2)], bounds=((-np.inf,-np.inf,-np.inf), (np.inf,np.inf,np.inf)) )
