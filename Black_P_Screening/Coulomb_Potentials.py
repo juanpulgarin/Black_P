@@ -182,7 +182,7 @@ def Screening_Short_Interaction(irvec_W,Wint_rF,orbitales,lat):
     W_epsilon_short = np.zeros_like(Wint_rF)
 
     a1, a2, a3 = lat[0,:], lat[1,:], lat[2,:]
-    nwan = Vint_rT.shape[0]
+    nwan = Wint_rF.shape[0]
 
     for i_orb in range(0,nwan):
         for j_orb in range(0,nwan):
