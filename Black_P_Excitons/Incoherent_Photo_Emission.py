@@ -51,11 +51,11 @@ def Reading_Data(QQ,path,retorno=5):
             a='0.00'
         nombre.append(a)
 
-    fname="./"+path+"/"+'px'+nombre[0]+'_py'+nombre[1]+'_pz'+nombre[2]+"_exc.h5"
+    fname = path+"/"+'px'+nombre[0]+'_py'+nombre[1]+'_pz'+nombre[2]+"_exc.h5"
     ϵ_plus,ϕ_real_plus,ϕ_imag_plus =Reading.Read_Eigen_states(fname)
     ϕ_plus = ϕ_real_plus + 1.0j*ϕ_imag_plus
 
-    fname="./"+path+"/"+'px'+nombre[0]+'_py'+nombre[1]+'_pz'+nombre[2]+"_exc_dens.h5"
+    fname = path+"/"+'px'+nombre[0]+'_py'+nombre[1]+'_pz'+nombre[2]+"_exc_dens.h5"
     ψ_plus = Reading.Read_Density(fname)
 
     if retorno ==1:
@@ -322,8 +322,8 @@ def Fitting_Parameters(x1,nkx,nky,nkz,ψ,direccion,QQ,pos_fix):
     #pos_fix = np.where(abs(x1-QQ/2)<=0.001)[0][0]
     if direccion =='kx':
         poptx, pcovx = curve_fit( func_q_eq_0, x1,np.reshape(ψ[0,:], [nkx,nky,nkz])[:,pos_fix[1][0],pos_fix[2][0]],p0=np.array([1,1,0]), bounds=((-np.inf,-np.inf,-np.inf), (np.inf,np.inf,np.inf)) )
-        popty, pcovy = curve_fit( func_q_eq_0, x1,np.reshape(ψ[0,:], [nkx,nky,nkz])[pos_fix[0][0],:,pos_fix[2][0]],p0=np.array([1,1,0]), bounds=((-np.inf,-np.inf,-np.inf), (np.inf,np.inf,np.inf)) )
-        poptz, pcovz = curve_fit( func_q_nq_0, x1,np.reshape(ψ[0,:], [nkx,nky,nkz])[pos_fix[0][0],pos_fix[1][0],:],p0=np.array([1,1,-QQ,-np.sign(QQ)]), bounds=((-np.inf,-np.inf,-np.inf,-np.inf), (np.inf,np.inf,np.inf,np.inf)), method = 'trf' )
+        popty, pcovy = curve_fit( func_q_eq_0, x1,np.reshape(ψ[0,:], [nkx,nky,nkz])[pos_fix[0][0],:,pos_fix[2][0]],p0=np.array([1,1,0]), bounds=((-np.inf,-np.inf,-np.inf), (np.inf,np.inf,np.inf)), method = 'trf', max_nfev=1000 )
+        poptz, pcovz = curve_fit( func_q_nq_0, x1,np.reshape(ψ[0,:], [nkx,nky,nkz])[pos_fix[0][0],pos_fix[1][0],:],p0=np.array([1,1,-QQ,-np.sign(QQ)]), bounds=((-np.inf,-np.inf,-np.inf,-np.inf), (np.inf,np.inf,np.inf,np.inf)), method = 'trf', max_nfev=1000 )
         poptx[2] = 0.0
         popty[2] = 0.0
 
