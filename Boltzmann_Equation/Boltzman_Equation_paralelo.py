@@ -572,7 +572,7 @@ def main():
             't_points'  : 20000,
             'source'    : True,
             'FWHM'      : 300 / cst.tfs,
-            'amplitude' : 0.034
+            'amplitude' : 0.016
                         }
 
     DOS_parameters = {
@@ -588,8 +588,8 @@ def main():
         #'γ' : np.array([0.00000001])
         #'γ' : np.array([0.000000002,0.000000003,0.000000001])
         #'γ' : np.array([0.000001,0.0000001,0.00])
-        #'γ' : np.array([0.000001,0.0000001])
-        'γ' : np.array([0.00000001,0.000000001,0.0])
+        'γ' : np.array([0.000001,0.0000001])
+        #'γ' : np.array([0.00000001,0.000000001,0.0])
                    }
 
     #run_calc(time_parameters,Γ_parameters, γ_parameters, Q_parameters,DOS=True,reading_gamma=None,save_gamma=True)

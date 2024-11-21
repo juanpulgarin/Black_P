@@ -25,6 +25,10 @@ def Interpolator(nk1,nk2,nk3,Ψ_k,nuevok):
 def Delta (E,sigma):
     return 1/np.sqrt(2*np.pi*sigma**2)*np.exp(-0.5*E**2/sigma**2)
 
+def Lorentz_smearing(k,Γ):
+    return 1.0/np.pi*(0.5*Γ)/(k**2 - (0.5*Γ)**2 )
+
+
 def SHIFTING_KplusP(nk1,nk2,nk3,Ψ_k,pexc):
     Ψ = np.reshape(Ψ_k, [nk1,nk2,nk3])
 
