@@ -260,7 +260,7 @@ def system(t,P, Γ_prime,α,envelope):
 
 #============================================================================
 #####---------------------Main function to run calculations------------------
-def run_calc(time_parameters,Γ_parameters, γ_parameters, Q_parameters,DOS=None,reading_gamma=None,save_gamma=False):
+def run_calc(time_parameters,Γ_parameters, γ_parameters, Q_parameters,DOS=None,reading_gamma=None,save_gamma=False,save_population=False):
     print("................................")
     print("........Reading Data............")
     print("................................\n")
@@ -409,11 +409,23 @@ def run_calc(time_parameters,Γ_parameters, γ_parameters, Q_parameters,DOS=None
         envelope  = 1.0
         amplitude = 0.0
 
-    γ     = γ_parameters['γ']
+    γ             = γ_parameters['γ']
+    tipo_de_gamma = γ_parameters['tipo_de_gamma']
 
     print(f"γ constant: {γ}")
+    print(f'The choosen gamma matrix has a smearing: {tipo_de_gamma}')
+
+
+    if tipo_de_gamma == 'variable':
+        sqrt_a = γ_parameters['sqrt_a']
+        print(f'With a prefactor: 1/sqrt({sqrt_a})')
+    else:
+        sqrt_a = False
+
 
     Γ_corrected = Γ_prime
+
+
 
     #γ = γ**2
     for γ_i in γ:
@@ -440,23 +452,32 @@ def run_calc(time_parameters,Γ_parameters, γ_parameters, Q_parameters,DOS=None
         path = './../../DATA/data_Boltzmann_equation/populations/'
 
         print("................................")
-        if source ==True:
-            hf = h5py.File(path+f'Boltzmann_Evolution_nq={n}_γ={γ_i}_laser={switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.3f}.h5', 'w')
-            hf.create_dataset('E(t)'  , data = 1/np.sqrt(2*np.pi*envelope**2)*np.exp( -(t_eval-4.5*envelope)**2 /(2.0*envelope**2) )          )
+        if save_population == True:
 
+            if source ==True:
+                if tipo_de_gamma == 'variable':
+                    hf = h5py.File(path+f'Boltzmann_Evolution_variable_a={sqrt_a}_nq={n}_γ={γ_i}_laser={switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.3f}.h5', 'w')
+                    print(f"File created: ./Boltzmann_Evolution_variable_a={sqrt_a}_nq={n}_γ={γ_i}_laser={switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.3f}.h5")
+                else:
+                    hf = h5py.File(path+f'Boltzmann_Evolution_nq={n}_γ={γ_i}_laser={switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.3f}.h5', 'w')
+                    print(f"File created: ./Boltzmann_Evolution_nq={n}_γ={γ_i}_laser={switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.3f}.h5")
 
-            print(f"File created: ./Boltzmann_Evolution_nq={n}_γ={γ_i}_laser={switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.3f}.h5")
+                hf.create_dataset('E(t)'  , data = 1/np.sqrt(2*np.pi*envelope**2)*np.exp( -(t_eval-4.5*envelope)**2 /(2.0*envelope**2) )          )
 
-        else:
-            hf = h5py.File(path+f'Boltzmann_Evolution_nq={n}_γ={γ_i}_laser={switch}.h5', 'w')
-            print(f"File created: ./Boltzmann_Evolution_nq={n}_γ={γ_i}_laser_{switch}.h5")
-        hf.create_dataset('Q_grid'  , data = Q_red          )
-        hf.create_dataset('P_q(t)'  , data = soluciones     )
-        hf.create_dataset('time'    , data = t_eval*cst.tfs )
-        hf.close()
+            else:
+                if tipo_de_gamma == 'variable':
+                    hf = h5py.File(path+f'Boltzmann_Evolution_variable_a={sqrt_a}_nq={n}_γ={γ_i}_laser={switch}.h5', 'w')
+                    print(f"File created: ./Boltzmann_Evolution_variable_a={sqrt_a}_nq={n}_γ={γ_i}_laser_{switch}.h5")
+                else:
+                    hf = h5py.File(path+f'Boltzmann_Evolution_nq={n}_γ={γ_i}_laser={switch}.h5', 'w')
+                    print(f"File created: ./Boltzmann_Evolution_nq={n}_γ={γ_i}_laser_{switch}.h5")
+            hf.create_dataset('Q_grid'  , data = Q_red          )
+            hf.create_dataset('P_q(t)'  , data = soluciones     )
+            hf.create_dataset('time'    , data = t_eval*cst.tfs )
+            hf.close()
 
-        print(f"In folder: {path}")
-        print("................................\n")
+            print(f"In folder: {path}")
+            print("................................\n")
 
         nsnap = 4
         step = len(t_eval) // nsnap
@@ -486,8 +507,9 @@ def run_calc(time_parameters,Γ_parameters, γ_parameters, Q_parameters,DOS=None
         ax[0][0].set_ylabel(f'$\\rho(t)$',fontsize=12)
         ax[0][0].tick_params(axis="x", labelsize=12)
         ax[0][0].tick_params(axis="y", labelsize=12)
-        #ax[0][0].set_ylim(0,0.020)
-
+        ax[0][0].set_ylim(0,0.0050)
+        ax[0][0].axvline( x = t_eval[np.where(soluciones[0,:] == np.max(soluciones[0,:]) )[0] ]*cst.tfs,ls=':', color='black' , label=f'{t_eval[np.where(soluciones[0,:] == np.max(soluciones[0,:]) )[0] ][0]*cst.tfs:.3f}' )
+        ax[0][0].legend()
         ax[0][0].grid(True)
         #ax[0][0].legend()
         ax[0][0].set_title(f'Number of points: {n}, Electron-Phonon Scatter rate $\\gamma$: {γ_i}', fontsize=14)
@@ -542,7 +564,8 @@ def run_calc(time_parameters,Γ_parameters, γ_parameters, Q_parameters,DOS=None
 
         #plt.show()
         if source ==True:
-            plt.savefig('update/' + f"Population_q_independent_n={n}_gamma={γ_i}_laser_{switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.3f}.png", bbox_inches='tight', transparent=False)
+            if tipo_de_gamma == 'variable':
+                plt.savefig('update/' + f"Population_q_independent_variable_a={sqrt_a}_n={n}_gamma={γ_i}_laser_{switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.3f}.png", bbox_inches='tight', transparent=False)
         else:
             plt.savefig('update/' + f"Population_q_independent_n={n}_gamma={γ_i}_laser_{switch}.png", bbox_inches='tight', transparent=False)
 
@@ -568,11 +591,12 @@ def main():
 
     time_parameters = {
             't_init'    : 0.0,
-            't_final'   : 7000 / cst.tfs,
-            't_points'  : 20000,
+            #'t_final'   : 7000 / cst.tfs,
+            't_final'   : 4000 / cst.tfs,
+            't_points'  : 30000,
             'source'    : True,
             'FWHM'      : 300 / cst.tfs,
-            'amplitude' : 0.016
+            'amplitude' : 0.026
                         }
 
     DOS_parameters = {
@@ -583,19 +607,28 @@ def main():
 
     #γ = np.array([0.00005,0.00006,0.00007,0.00008,0.00009,0.0001])
     γ_parameters = {
+        'tipo_de_gamma' : 'variable',
+        'sqrt_a'        : 48,
         #'γ' : np.array([0.000001,0.0000009,0.0000007,0.0000005,0.0000003,0.0000001,0.00000009,0.00000007,0.00000005,0.00000003])
         #'γ' : np.array([0.00,0.000000001,0.000001])
-        #'γ' : np.array([0.00000001])
+        #'γ' : np.array([0.0000001])
         #'γ' : np.array([0.000000002,0.000000003,0.000000001])
         #'γ' : np.array([0.000001,0.0000001,0.00])
-        'γ' : np.array([0.000001,0.0000001])
+        #'γ' : np.array([0.0000004,0.0000006,0.0000008,0.000001,0.000002])
+        'γ' : np.array([0.000000040,0.000000060,0.000000080,0.00000010,0.0000002])
+        #'γ' : np.array([0.000001,0.0000001])
+        #'γ' : np.array([0.00000001,0.000000001,0.00])
         #'γ' : np.array([0.00000001,0.000000001,0.0])
                    }
 
-    #run_calc(time_parameters,Γ_parameters, γ_parameters, Q_parameters,DOS=True,reading_gamma=None,save_gamma=True)
-    run_calc(time_parameters,Γ_parameters, γ_parameters, Q_parameters,DOS=True,reading_gamma=f"./../../DATA/data_Boltzmann_equation/Gamma_matrix/Gamma_reduced_n={Q_parameters['n']}.txt",save_gamma=False)
 
+    if γ_parameters['tipo_de_gamma'] == 'reduced':
+        #run_calc(time_parameters,Γ_parameters, γ_parameters, Q_parameters,DOS=True,reading_gamma=None,save_gamma=True)
+        run_calc(time_parameters,Γ_parameters, γ_parameters, Q_parameters,DOS=True,reading_gamma=f"./../../DATA/data_Boltzmann_equation/Gamma_matrix/Gamma_{γ_parameters['tipo_de_gamma']}_n={Q_parameters['n']}.txt",save_gamma=False)
 
+    if γ_parameters['tipo_de_gamma'] == 'variable':
+        #run_calc(time_parameters,Γ_parameters, γ_parameters, Q_parameters,DOS=True,reading_gamma=None,save_gamma=True)
+        run_calc(time_parameters,Γ_parameters, γ_parameters, Q_parameters,DOS=True,reading_gamma=f"./../../DATA/data_Boltzmann_equation/Gamma_matrix/Gamma_{γ_parameters['tipo_de_gamma']}_n={Q_parameters['n']}_a={γ_parameters['sqrt_a']}.txt",save_gamma=False,save_population=True)
 
 #------------------------------------------------------------------------------
 if __name__ == '__main__':
