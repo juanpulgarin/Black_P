@@ -248,7 +248,9 @@ def Gamma_Matrix(n,Δ,Δ_ω,sigma,Temp,velocity,Exciton_Energy, Q ):
 def system(t,P, Γ_prime,α,envelope):
     dP = np.zeros_like(P)
 
-    source_term = α/np.sqrt(2*np.pi*envelope**2)*np.exp( -(t-4.5*envelope)**2 /(2.0*envelope**2) )
+    #source_term = α/np.sqrt(2*np.pi*envelope**2)*np.exp( -(t-4.5*envelope)**2 /(2.0*envelope**2) )
+    source_term = α/np.sqrt(np.pi*envelope**2)*np.exp( -(t-4.5*envelope)**2 /(envelope**2) )
+
 
     dP = np.einsum('ji,j->i',Γ_prime.T,P) - np.einsum('i,i->i',P,np.einsum('ij->i',Γ_prime))
     dP[0] += source_term
@@ -456,13 +458,13 @@ def run_calc(time_parameters,Γ_parameters, γ_parameters, Q_parameters,DOS=None
 
             if source ==True:
                 if tipo_de_gamma == 'variable':
-                    hf = h5py.File(path+f'Boltzmann_Evolution_variable_a={sqrt_a}_nq={n}_γ={γ_i}_laser={switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.3f}.h5', 'w')
-                    print(f"File created: ./Boltzmann_Evolution_variable_a={sqrt_a}_nq={n}_γ={γ_i}_laser={switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.3f}.h5")
+                    hf = h5py.File(path+f'Boltzmann_Evolution_variable_a={sqrt_a}_nq={n}_γ={γ_i}_laser={switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.6f}.h5', 'w')
+                    print(f"File created: ./Boltzmann_Evolution_variable_a={sqrt_a}_nq={n}_γ={γ_i}_laser={switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.6f}.h5")
                 else:
-                    hf = h5py.File(path+f'Boltzmann_Evolution_nq={n}_γ={γ_i}_laser={switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.3f}.h5', 'w')
-                    print(f"File created: ./Boltzmann_Evolution_nq={n}_γ={γ_i}_laser={switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.3f}.h5")
+                    hf = h5py.File(path+f'Boltzmann_Evolution_nq={n}_γ={γ_i}_laser={switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.4f}.h5', 'w')
+                    print(f"File created: ./Boltzmann_Evolution_nq={n}_γ={γ_i}_laser={switch}_FWHM={FWHM*cst.tfs:.2f}_α={amplitude:.4f}.h5")
 
-                hf.create_dataset('E(t)'  , data = 1/np.sqrt(2*np.pi*envelope**2)*np.exp( -(t_eval-4.5*envelope)**2 /(2.0*envelope**2) )          )
+                hf.create_dataset('E(t)'  , data = 1/np.sqrt(np.pi*envelope**2)*np.exp( -(t_eval-4.5*envelope)**2 /(envelope**2) )          )
 
             else:
                 if tipo_de_gamma == 'variable':
@@ -596,7 +598,7 @@ def main():
             't_points'  : 30000,
             'source'    : True,
             'FWHM'      : 300 / cst.tfs,
-            'amplitude' : 0.026
+            'amplitude' : 0.00001
                         }
 
     DOS_parameters = {
@@ -615,7 +617,7 @@ def main():
         #'γ' : np.array([0.000000002,0.000000003,0.000000001])
         #'γ' : np.array([0.000001,0.0000001,0.00])
         #'γ' : np.array([0.0000004,0.0000006,0.0000008,0.000001,0.000002])
-        'γ' : np.array([0.000000040,0.000000060,0.000000080,0.00000010,0.0000002])
+        'γ' : np.array([0.00000001])
         #'γ' : np.array([0.000001,0.0000001])
         #'γ' : np.array([0.00000001,0.000000001,0.00])
         #'γ' : np.array([0.00000001,0.000000001,0.0])
